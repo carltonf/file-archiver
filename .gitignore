@@ -1,0 +1,6 @@
+*
+!.gitignore
+
+!file-archiver.sh
+!README.md
+
