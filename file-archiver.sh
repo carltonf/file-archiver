@@ -1,18 +1,39 @@
 #!/bin/bash
 
+# Usage:
+#
+
+if [[ $# < 2 ]]; then
+  echo "Usage:$0 <source dir> <dest directory> "
+  exit 1
+fi
+
 TOP=$(pwd)
-SRC_DIR=$TOP/test-data
-DST_DIR=$TOP/build
-mkdir -pv "$DST_DIR"
-FILELIST=$TOP/filelist.txt
-touch "$FILELIST"
+SRC_DIR=$(realpath $1)
+DST_DIR=$(realpath $2)
+if [[ ! -d "$SRC_DIR" ]]; then
+  echo "ERROR: source directory doesn't exist."
+  exit 2
+fi
+if [[ ! -d "$DST_DIR" ]]; then
+  echo "ERROR: destination directory doesn't exist."
+  exit 2
+fi
 
-set -x
+SECRET_FILE=$HOME/.config/file-archiver-secret
+if [[ ! -e $SECRET_FILE ]]; then
+  echo "ERROR: $SECRET_FILE doesn't exist."
+  exit 3
+fi
+PASSWORD=$(<$SECRET_FILE)
 
-# TODO retrieve password from file
-PASSWORD=$(<archiver-secret)
+FILELIST=$TOP/$(date +%Y%m%d)-backup-filelist.txt
+echo "$FILELIST" > "$FILELIST"
+
 
 args7z=(
+# make logs
+"-bt" "-bb3"
 # force 7z format
 "-t7z"
 # faster compression. No need to save cloud storage
@@ -34,10 +55,7 @@ for i in *; do
   7z a "${args7z[@]}" "$DST_DIR/$archive_name.7z" "$i"
   echo "$list_entry" >> "$FILELIST"
   if [[ -d "$i" ]]; then
-    tree $i >> "$FILELIST"
+    tree "$i" >> "$FILELIST"
   fi
 done
-
-# command to clean up
-# rm -rf build/ filelist.txt
 
