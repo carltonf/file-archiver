@@ -9,8 +9,8 @@ if [[ $# < 2 ]]; then
 fi
 
 TOP=$(pwd)
-SRC_DIR=$(realpath $1)
-DST_DIR=$(realpath $2)
+SRC_DIR=$(realpath "$1")
+DST_DIR=$(realpath "$2")
 if [[ ! -d "$SRC_DIR" ]]; then
   echo "ERROR: source directory doesn't exist."
   exit 2
