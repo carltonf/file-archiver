@@ -18,6 +18,11 @@ if ! hash 7z &>/dev/null; then
   exit 1
 fi
 
+if ! hash tree &>/dev/null; then
+  echo 'Error: tree is not available!'
+  exit 1
+fi
+
 TOP=$(pwd)
 SRC_DIR=$(realpath "$1")
 DST_DIR=$(realpath "$2")
