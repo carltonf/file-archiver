@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Usage:
-#
-
 if [[ $# < 2 ]]; then
-  echo "Usage:$0 <source dir> <dest directory> "
+  cat <<END
+Usage:$0 <source dir> <destination dir>
+NOTE: 
+- A list of files being archived is saved in a file like \$PWD/20220403_1201-backup-filelist.txt
+- split archives shall be saved under directory like <dst>/20220403_1201/
+END
+
   exit 1
 fi
 
@@ -20,6 +23,12 @@ if [[ ! -d "$DST_DIR" ]]; then
   exit 2
 fi
 
+TIMESTAMP=$(date +%Y%m%d_%H%M)
+if [[ $? -ne 0 ]]; then
+  exit 2
+fi
+mkdir -pv "$DST_DIR/$TIMESTAMP"
+
 SECRET_FILE=$HOME/.config/file-archiver-secret
 if [[ ! -e $SECRET_FILE ]]; then
   echo "ERROR: $SECRET_FILE doesn't exist."
@@ -27,7 +36,7 @@ if [[ ! -e $SECRET_FILE ]]; then
 fi
 PASSWORD=$(<$SECRET_FILE)
 
-FILELIST=$TOP/$(date +%Y%m%d_%H%M)-backup-filelist.txt
+FILELIST=$TOP/$TIMESTAMP-backup-filelist.txt
 echo "$FILELIST" > "$FILELIST"
 
 
