@@ -11,6 +11,13 @@ END
   exit 1
 fi
 
+# Test the existence of 7z program
+
+if ! hash 7z &>/dev/null; then
+  echo 'Error: 7z is not available!'
+  exit 1
+fi
+
 TOP=$(pwd)
 SRC_DIR=$(realpath "$1")
 DST_DIR=$(realpath "$2")
