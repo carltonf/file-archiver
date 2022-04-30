@@ -27,7 +27,7 @@ if [[ ! -e $SECRET_FILE ]]; then
 fi
 PASSWORD=$(<$SECRET_FILE)
 
-FILELIST=$TOP/$(date +%Y%m%d)-backup-filelist.txt
+FILELIST=$TOP/$(date +%Y%m%d_%H%M)-backup-filelist.txt
 echo "$FILELIST" > "$FILELIST"
 
 
