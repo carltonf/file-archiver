@@ -34,7 +34,8 @@ TIMESTAMP=$(date +%Y%m%d_%H%M)
 if [[ $? -ne 0 ]]; then
   exit 2
 fi
-mkdir -pv "$DST_DIR/$TIMESTAMP"
+DST_DIR=$DST_DIR/$TIMESTAMP
+mkdir -pv "$DST_DIR"
 
 SECRET_FILE=$HOME/.config/file-archiver-secret
 if [[ ! -e $SECRET_FILE ]]; then
